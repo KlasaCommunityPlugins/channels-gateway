@@ -1,11 +1,11 @@
 const { Structures } = require('discord.js');
 
-module.exports = Structures.extend('GuildMember', GuildMember => {
+module.exports = Structures.extend('TextChannel', TextChannel => {
 	/**
 	 * Klasa's Extended GuildMember
 	 * @extends external:GuildMember
 	 */
-	class KlasaMember extends GuildMember {
+	class KlasaTextChannel extends TextChannel {
 
 		/**
 		 * @typedef {external:GuildMemberJSON} KlasaMemberJSON
@@ -23,7 +23,7 @@ module.exports = Structures.extend('GuildMember', GuildMember => {
 			 * @since 0.0.1
 			 * @type {external:Settings}
 			 */
-			this.settings = this.client.gateways.members.create([this.guild.id, this.id]);
+			this.settings = this.client.gateways.textchannels.create([this.guild.id, this.id]);
 		}
 
 		/**
@@ -37,5 +37,5 @@ module.exports = Structures.extend('GuildMember', GuildMember => {
 
 	}
 
-	return KlasaMember;
+	return KlasaTextChannel;
 });

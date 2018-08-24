@@ -5,7 +5,7 @@ const { Collection } = require('discord.js');
  * The Gateway class that manages the data input, parsing, and output, of an entire database, while keeping a cache system sync with the changes.
  * @extends GatewayStorage
  */
-class MemberGateway extends GatewayStorage {
+class TextChannelGateway extends GatewayStorage {
 
 	/**
 	 * @since 0.0.1
@@ -57,12 +57,12 @@ class MemberGateway extends GatewayStorage {
 	 * @returns {?external:Settings}
 	 */
 	get(id) {
-		const [guildID, memberID] = typeof id === 'string' ? id.split('.') : id;
+		const [guildID, channelID] = typeof id === 'string' ? id.split('.') : id;
 
 		const guild = this.client.guilds.get(guildID);
 		if (guild) {
-			const member = guild.members.get(memberID);
-			return member && member.settings;
+			const channel = guild.channels.get(channelID);
+			return channel && channel.settings;
 		}
 
 		return undefined;
@@ -76,11 +76,11 @@ class MemberGateway extends GatewayStorage {
 	 * @returns {external:Settings}
 	 */
 	create(id, data = {}) {
-		const [guildID, memberID] = typeof id === 'string' ? id.split('.') : id;
-		const entry = this.get([guildID, memberID]);
+		const [guildID, channelID] = typeof id === 'string' ? id.split('.') : id;
+		const entry = this.get([guildID, channelID]);
 		if (entry) return entry;
 
-		const settings = new this.Settings(this, { id: `${guildID}.${memberID}`, ...data });
+		const settings = new this.Settings(this, { id: `${guildID}.${channelID}`, ...data });
 		if (this._synced) settings.sync();
 		return settings;
 	}
@@ -91,7 +91,7 @@ class MemberGateway extends GatewayStorage {
 	 * @param {(Array<string>|string)} [input=Array<string>] An object containing a id property, like discord.js objects, or a string
 	 * @returns {?(MemberGateway|external:Settings)}
 	 */
-	async sync(input = this.client.guilds.reduce((keys, guild) => keys.concat(guild.members.map(member => member.settings.id)), [])) {
+	async sync(input = this.client.guilds.reduce((keys, guild) => keys.concat(guild.channels.map(channel => channel.settings.id)), [])) {
 		if (Array.isArray(input)) {
 			if (!this._synced) this._synced = true;
 			const entries = await this.provider.getAll(this.type, input);
@@ -108,7 +108,7 @@ class MemberGateway extends GatewayStorage {
 
 			// Set all the remaining settings from unknown status in DB to not exists.
 			for (const guild of this.client.guilds.values()) {
-				for (const member of guild.members.values()) if (member.settings._existsInDB !== true) member.settings._existsInDB = false;
+				for (const channel of guild.channels.values()) if (channel.settings._existsInDB !== true) channel.settings._existsInDB = false;
 			}
 			return this;
 		}
@@ -122,4 +122,4 @@ class MemberGateway extends GatewayStorage {
 
 }
 
-module.exports = MemberGateway;
+module.exports = TextChannelGateway;
