@@ -1,10 +1,10 @@
 {
-  "name": "klasa-member-gateway",
+  "name": "klasa-textchannel-gateway",
   "version": "0.0.1-dev",
-  "description": "Klasa Member Gateway: a simple plugin for the klasa bot framework that adds an efficient per-member settings gateway.",
+  "description": "Klasa TextChannel Gateway: a simple plugin for the klasa bot framework that adds an efficient per-textchannel settings gateway.",
   "homepage": "https://klasa.js.org/",
   "bugs": {
-    "url": "https://github.com/dirigeants/klasa-member-gateway/issues"
+    "url": "https://github.com/1Conan/klasa-textchannel-gateway/issues"
   },
   "license": "MIT",
   "author": "Dirigeants",
