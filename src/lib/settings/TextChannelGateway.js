@@ -108,7 +108,7 @@ class TextChannelGateway extends GatewayStorage {
 
 			// Set all the remaining settings from unknown status in DB to not exists.
 			for (const guild of this.client.guilds.values()) {
-				for (const channel of guild.channels.filter(x => x.type === 'text').values()) if (channel.settings._existsInDB !== true) channel.settings._existsInDB = false;
+				for (const channel of guild.channels.values()) if (channel.type === 'text' && channel.settings._existsInDB !== true) channel.settings._existsInDB = false;
 			}
 			return this;
 		}
