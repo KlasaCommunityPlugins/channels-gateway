@@ -91,7 +91,7 @@ class TextChannelGateway extends GatewayStorage {
 	 * @param {(Array<string>|string)} [input=Array<string>] An object containing a id property, like discord.js objects, or a string
 	 * @returns {?(MemberGateway|external:Settings)}
 	 */
-	async sync(input = this.client.guilds.reduce((keys, guild) => keys.concat(guild.channels.filter(channel => channel.type === 'text').map(channel => channel.settings.id)), [])) {
+	async sync(input = this.client.guilds.reduce((keys, guild) => keys.concat(guild.channels.reduce((a, channel) => { if (channel.type === 'text') a.push(channel.settings.id); return a }, [])), [])) {
 		if (Array.isArray(input)) {
 			if (!this._synced) this._synced = true;
 			const entries = await this.provider.getAll(this.type, input);
