@@ -26,6 +26,7 @@ class TextChannelGateway extends GatewayStorage {
 	 */
 	async sync(input = this.client.channels.reduce((keys, channel) => { if(channel.type === 'text') keys.push(channel.settings.id); return keys; }, [])) {
 		if (Array.isArray(input)) {
+			if (!this._synced) this._synced = true;
 			const entries = await this.provider.getAll(this.type, input);
 			for (const entry of entries) {
 				if (!entry) continue;
