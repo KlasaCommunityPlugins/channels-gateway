@@ -1,11 +1,10 @@
-const { GatewayStorage, Settings, util: { getIdentifier } } = require('klasa');
-const { Collection } = require('discord.js');
-
+const { GatewayStorage, util: { getIdentifier } } = require('klasa');
 /**
  * The Gateway class that manages the data input, parsing, and output, of an entire database, while keeping a cache system sync with the changes.
  * @extends GatewayStorage
  */
 class TextChannelGateway extends GatewayStorage {
+
 	/**
 	 * Get a Settings entry from this gateway
 	 * @since 0.0.1
@@ -24,7 +23,7 @@ class TextChannelGateway extends GatewayStorage {
 	 * @param {(Array<string>|string)} [input=Array<string>] An object containing a id property, like discord.js objects, or a string
 	 * @returns {?(TextChannelGateway|external:Settings)}
 	 */
-	async sync(input = this.client.channels.reduce((keys, channel) => { if(channel.type === 'text') keys.push(channel.settings.id); return keys; }, [])) {
+	async sync(input = this.client.channels.reduce((keys, channel) => { if (channel.type === 'text') keys.push(channel.settings.id); return keys; }, [])) {
 		if (Array.isArray(input)) {
 			if (!this._synced) this._synced = true;
 			const entries = await this.provider.getAll(this.type, input);
