@@ -1,4 +1,4 @@
-# klasa-member-gateway
+# klasa-textchannel-gateway
 
 Simple plugin to manage an efficient per-member settings gateway.
 
@@ -6,10 +6,10 @@ Simple plugin to manage an efficient per-member settings gateway.
 
 ```bash
 # NPM
-$ npm install --save dirigeants/klasa-member-gateway
+$ npm install --save 1Conan/klasa-textchannel-gateway
 
 # Yarn
-$ yarn add dirigeants/klasa-member-gateway
+$ yarn add 1Conan/klasa-textchannel-gateway
 ```
 
 ## Setup
@@ -17,10 +17,9 @@ $ yarn add dirigeants/klasa-member-gateway
 ```js
 const { Client } = require('klasa');
 
-Client.use(require('klasa-member-gateway'));
+Client.use(require('klasa-textchannel-gateway'));
 
 // Modifying the Schema
-Client.defaultMemberSchema
-    .add('experience', 'integer', { default: 0 })
-    .add('level', 'integer', { default: 0 });
+Client.defaultTextChannelSchema
+    .add('disabledCommands', 'command')
 ```
