@@ -2,13 +2,13 @@ const { Structures } = require('discord.js');
 
 module.exports = Structures.extend('TextChannel', TextChannel => {
 	/**
-	 * Klasa's Extended GuildMember
-	 * @extends external:GuildMember
+	 * Klasa's Extended TextChannel
+	 * @extends external:TextChannel
 	 */
 	class KlasaTextChannel extends TextChannel {
 
 		/**
-		 * @typedef {external:GuildMemberJSON} KlasaMemberJSON
+		 * @typedef {external:TextChannelJSON} KlasaTextChannelJSON
 		 * @property {external:SettingsJSON} settings The per member settings
 		 */
 
@@ -29,7 +29,7 @@ module.exports = Structures.extend('TextChannel', TextChannel => {
 		/**
 		 * Returns the JSON-compatible object of this instance.
 		 * @since 0.5.0
-		 * @returns {KlasaMemberJSON}
+		 * @returns {KlasaTextChannelJSON}
 		 */
 		toJSON() {
 			return { ...super.toJSON(), settings: this.settings };

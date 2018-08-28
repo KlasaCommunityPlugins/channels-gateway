@@ -8,8 +8,8 @@ module.exports = {
 };
 
 /**
- * @external GuildMember
- * @see {@link https://discord.js.org/#/docs/main/master/class/GuildMember}
+ * @external TextChannel
+ * @see {@link https://discord.js.org/#/docs/main/master/class/TextChannel}
  */
 /**
  * @external Settings

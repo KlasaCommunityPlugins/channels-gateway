@@ -22,7 +22,7 @@ class TextChannelGateway extends GatewayStorage {
 	 * Sync either all entries from the cache with the persistent database, or a single one.
 	 * @since 0.0.1
 	 * @param {(Array<string>|string)} [input=Array<string>] An object containing a id property, like discord.js objects, or a string
-	 * @returns {?(MemberGateway|external:Settings)}
+	 * @returns {?(TextChannelGateway|external:Settings)}
 	 */
 	async sync(input = this.client.channels.reduce((keys, channel) => { if(channel.type === 'text') keys.push(channel.settings.id); return keys; }, [])) {
 		if (Array.isArray(input)) {
