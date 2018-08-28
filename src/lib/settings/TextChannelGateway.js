@@ -40,50 +40,16 @@ class TextChannelGateway extends GatewayStorage {
 	}
 
 	/**
-	 * The Settings that this class should make.
-	 * @since 0.0.1
-	 * @type {external:Settings}
-	 * @readonly
-	 * @private
-	 */
-	get Settings() {
-		return Settings;
-	}
-
-	/**
 	 * Get a Settings entry from this gateway
 	 * @since 0.0.1
 	 * @param {string|string[]} id The id for this instance
 	 * @returns {?external:Settings}
 	 */
+	// Thanks @kyranet :)
 	get(id) {
-		const [guildID, channelID] = typeof id === 'string' ? id.split('.') : id;
-
-		const guild = this.client.guilds.get(guildID);
-		if (guild) {
-			const channel = guild.channels.get(channelID);
-			return channel && channel.settings;
-		}
-
-		return undefined;
-	}
-
-	/**
-	 * Create a new Settings for this gateway
-	 * @since 0.0.1
-	 * @param {string|string[]} id The id for this instance
-	 * @param {Object<string, *>} [data={}] The data for this Settings instance
-	 * @returns {external:Settings}
-	 */
-	create(id, data = {}) {
-		const [guildID, channelID] = typeof id === 'string' ? id.split('.') : id;
-		const entry = this.get([guildID, channelID]);
-		if (entry) return entry;
-
-		const settings = new this.Settings(this, { id: `${guildID}.${channelID}`, ...data });
-		if (this._synced) settings.sync();
-		return settings;
-	}
+		const channel = this.client.channels.get(id);
+		return channel && channel.type === 'text' ? channel.settings : undefined;
+}
 
 	/**
 	 * Sync either all entries from the cache with the persistent database, or a single one.
@@ -91,7 +57,7 @@ class TextChannelGateway extends GatewayStorage {
 	 * @param {(Array<string>|string)} [input=Array<string>] An object containing a id property, like discord.js objects, or a string
 	 * @returns {?(MemberGateway|external:Settings)}
 	 */
-	async sync(input = this.client.guilds.reduce((keys, guild) => keys.concat(guild.channels.reduce((a, channel) => { if (channel.type === 'text') a.push(channel.settings.id); return a }, [])), [])) {
+	async sync(input = this.client.channels.reduce((keys, channel) => { if(channel.type === 'text') keys.push(channel.settings.id); return keys; }, [])) {
 		if (Array.isArray(input)) {
 			if (!this._synced) this._synced = true;
 			const entries = await this.provider.getAll(this.type, input);
@@ -107,8 +73,8 @@ class TextChannelGateway extends GatewayStorage {
 			}
 
 			// Set all the remaining settings from unknown status in DB to not exists.
-			for (const guild of this.client.guilds.values()) {
-				for (const channel of guild.channels.values()) if (channel.type === 'text' && channel.settings._existsInDB !== true) channel.settings._existsInDB = false;
+			for (const channel of this.client.channels.values()) {
+				if (channel.type === 'text' && channel.settings._existsInDB !== true) channel.settings._existsInDB = false;
 			}
 			return this;
 		}
