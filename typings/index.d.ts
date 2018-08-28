@@ -1,7 +1,7 @@
 declare module 'klasa-member-gateway' {
 
 	import {
-		GuildMember,
+		TextChannel,
 		Snowflake,
 		Collection
 	} from 'discord.js';
@@ -15,38 +15,37 @@ declare module 'klasa-member-gateway' {
 		GatewayGetPathResult
 	} from 'klasa';
 
-	class MemberGatewayClient extends Client {
-		public static defaultMembersSchema: Schema;
+	class TextChannelGatewayClient extends Client {
+		public static defaultTextChannelSchema: Schema;
 	}
 
-	export { MemberGatewayClient as Client };
+	export { TextChannelGatewayClient as Client };
 
-	export class KlasaMember extends GuildMember {
+	export class KlasaTextChannel extends TextChannel {
 		public settings: Settings;
-		public toJSON(): KlasaMemberJSON;
+		public toJSON(): KlasaTextChannelJSON;
 	}
 
-	export class MemberGateway extends GatewayStorage {
-		public store: GatewayDriver;
-		public syncQueue: Collection<string, Promise<Settings>>;
-		public readonly Settings: Settings;
-		private _synced: boolean;
-
+	export class TextChannelGateway extends GatewayStorage {
 		public get(id: string | [Snowflake, Snowflake]): Settings | null;
-		public create(id: string | [Snowflake, Snowflake], data?: Object): Settings;
 		public sync(input: string): Promise<Settings>;
 		public sync(input?: string[]): Promise<this>;
 	}
 
 	export type KlasaMemberJSON = {
-		guildID: Snowflake;
-		userID: Snowflake;
-		joinedTimestamp: number;
-		lastMessageChannelID?: Snowflake;
+		type: string;
 		deleted: boolean;
-		nickname?: string;
-		displayName: string;
-		roles: Array<Snowflake>;
+		id: Snowflake;
+		name: string;
+		rawPosition: number;
+		parentID: Snowflake;
+		permissionOverwrites: Snowflake[];
+		topic: string;
+		nsfw: boolean;
+		lastMessageID: Snowflake;
+		guild: Snowflake;
+		messages: Snowflake[];
+		createdTimestamp: number;
 		settings: Settings;
 	};
 }
