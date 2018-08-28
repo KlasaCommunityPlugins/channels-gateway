@@ -49,7 +49,7 @@ class TextChannelGateway extends GatewayStorage {
 	get(id) {
 		const channel = this.client.channels.get(id);
 		return channel && channel.type === 'text' ? channel.settings : undefined;
-}
+	}
 
 	/**
 	 * Sync either all entries from the cache with the persistent database, or a single one.
