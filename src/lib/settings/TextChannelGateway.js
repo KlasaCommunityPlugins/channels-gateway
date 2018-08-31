@@ -4,7 +4,9 @@ const { GatewayStorage, util: { getIdentifier } } = require('klasa');
  * @extends GatewayStorage
  */
 class TextChannelGateway extends GatewayStorage {
-
+	constructor(store, type, schema, provider) {
+		super(store.client, type, schema, provider);
+	}
 	/**
 	 * Get a Settings entry from this gateway
 	 * @since 0.0.1
@@ -17,6 +19,16 @@ class TextChannelGateway extends GatewayStorage {
 		return channel && channel.type === 'text' ? channel.settings : undefined;
 	}
 
+	create(id, data = {}) {
+		const channelId = id;
+		const entry = this.get(channelId);
+		if (entry) return entry;
+
+		const settings = new Settings(this, { id: `${channelId}`, ...data });
+		if (this._synced) settings.sync();
+		return settings;
+	}
+	
 	/**
 	 * Sync either all entries from the cache with the persistent database, or a single one.
 	 * @since 0.0.1
