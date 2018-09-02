@@ -4,10 +4,11 @@ const { GatewayStorage, Settings, util: { getIdentifier } } = require('klasa');
  * @extends GatewayStorage
  */
 class TextChannelGateway extends GatewayStorage {
+
 	constructor(store, type, schema, provider) {
 		super(store.client, type, schema, provider);
 	}
-	
+
 	/**
 	 * The Settings that this class should make.
 	 * @since 0.0.1
