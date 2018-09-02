@@ -7,6 +7,27 @@ class TextChannelGateway extends GatewayStorage {
 
 	constructor(store, type, schema, provider) {
 		super(store.client, type, schema, provider);
+
+		/**
+		 * The GatewayDriver that manages this Gateway
+		 * @since 0.0.1
+		 * @type {external:GatewayDriver}
+		 */
+		this.store = store;
+
+		/**
+		 * The synchronization queue for all Settings instances
+		 * @since 0.0.1
+		 * @type {external:Collection<string, Promise<external:Settings>>}
+		 */
+		this.syncQueue = new Collection();
+
+		/**
+		 * @since 0.0.1
+		 * @type {boolean}
+		 * @private
+		 */
+		Object.defineProperty(this, '_synced', { value: false, writable: true });
 	}
 
 	/**
