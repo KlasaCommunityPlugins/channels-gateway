@@ -10,7 +10,7 @@ class TextChannelGateway extends GatewayStorage {
 	/**
 	 * Get a Settings entry from this gateway
 	 * @since 0.0.1
-	 * @param {string|string[]} id The id for this instance
+	 * @param {string} id The id for this instance
 	 * @returns {?external:Settings}
 	 */
 	// Thanks @kyranet :)
@@ -19,12 +19,18 @@ class TextChannelGateway extends GatewayStorage {
 		return channel && channel.type === 'text' ? channel.settings : undefined;
 	}
 
+	/**
+	 * Create a new Settings for this gateway
+	 * @since 0.0.1
+	 * @param {string} id The id for this instance
+	 * @param {Object<string, *>} [data={}] The data for this Settings instance
+	 * @returns {external:Settings}
+	 */
 	create(id, data = {}) {
-		const channelId = id;
-		const entry = this.get(channelId);
+		const entry = this.get(id);
 		if (entry) return entry;
 
-		const settings = new Settings(this, { id: `${channelId}`, ...data });
+		const settings = new this.Settings(this, { id, ...data });
 		if (this._synced) settings.sync();
 		return settings;
 	}
