@@ -1,4 +1,4 @@
-const { GatewayStorage, util: { getIdentifier } } = require('klasa');
+const { GatewayStorage, Settings, util: { getIdentifier } } = require('klasa');
 /**
  * The Gateway class that manages the data input, parsing, and output, of an entire database, while keeping a cache system sync with the changes.
  * @extends GatewayStorage
@@ -7,6 +7,18 @@ class TextChannelGateway extends GatewayStorage {
 	constructor(store, type, schema, provider) {
 		super(store.client, type, schema, provider);
 	}
+	
+	/**
+	 * The Settings that this class should make.
+	 * @since 0.0.1
+	 * @type {external:Settings}
+	 * @readonly
+	 * @private
+	 */
+	get Settings() {
+		return Settings;
+	}
+
 	/**
 	 * Get a Settings entry from this gateway
 	 * @since 0.0.1
@@ -34,7 +46,7 @@ class TextChannelGateway extends GatewayStorage {
 		if (this._synced) settings.sync();
 		return settings;
 	}
-	
+
 	/**
 	 * Sync either all entries from the cache with the persistent database, or a single one.
 	 * @since 0.0.1
