@@ -1,3 +1,4 @@
+const { join } = require('path');
 const { Client, Schema, util: { mergeDefault } } = require('klasa');
 const { CLIENT } = require('./util/constants');
 const TextChannelGateway = require('./settings/TextChannelGateway');
@@ -19,6 +20,9 @@ module.exports = class extends Client {
 		this.gateways.textchannels = new TextChannelGateway(this.gateways, 'textchannels', textchannelSchema, textchannels.provider || this.options.providers.default);
 		this.gateways.keys.add('textchannels');
 		this.gateways._queue.push(this.gateways.textchannels.init.bind(this.gateways.textchannels));
+
+
+		this.commands.registerCoreDirectory(join(__dirname, '..', '/'));
 	}
 
 };
