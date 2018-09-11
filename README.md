@@ -2,6 +2,8 @@
 
 Simple plugin to manage an efficient per-member settings gateway.
 
+Modified from [dirigeants/klasa-member-gateway](https://github.com/dirigeants/klasa-member-gateway)
+
 ## Installation
 
 ```bash
