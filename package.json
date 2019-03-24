@@ -1,0 +1,36 @@
+{
+  "name": "@kcp/channels-gateway",
+  "version": "1.0.0",
+  "description": "Klasa Channels Gateway: a plugin to add per-channel settings gateway",
+  "main": "dist/index",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KlasaCommunityPlugins/channels-gateway.git"
+  },
+  "keywords": [
+    "klasa"
+  ],
+  "author": "1Conan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/KlasaCommunityPlugins/channels-gateway/issues"
+  },
+  "homepage": "https://github.com/KlasaCommunityPlugins/channels-gateway#readme",
+  "peerDependencies": {
+    "discord.js": "github:discordjs/discord.js",
+    "klasa": "github:dirigeants/klasa"
+  },
+  "devDependencies": {
+    "@kcp/lint": "github:KlasaCommunityPlugins/lint-files",
+    "@types/node": "^11.11.4",
+    "tslint": "^5.14.0",
+    "typescript": "^3.3.4000"
+  },
+  "dependencies": {
+    "discord.js": "github:discordjs/discord.js",
+    "klasa": "github:dirigeants/klasa"
+  }
+}
