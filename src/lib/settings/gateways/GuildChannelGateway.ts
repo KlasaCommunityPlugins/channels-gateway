@@ -42,7 +42,7 @@ export class GuildChannelGateway extends Gateway {
 
 			for (const channel of this.client.channels.values()) {
 				// @ts-ignore
-				if (channel.type === this.type.split('Channel')[0]) (channel as GuildChannel).settings!._existsInDB = false;
+				if (channel.type === this.type.split('Channel')[0] && !channel.settings!._existsInDB) (channel as GuildChannel).settings!._existsInDB = false;
 			}
 			return this;
 		}
