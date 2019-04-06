@@ -1,83 +1,124 @@
-import { GatewayDriverRegisterOptions, KlasaClient, KlasaClientOptions, Schema, Settings, util } from 'klasa';
+// Copyright (c) 2018-2019 KlasaCommunityPlugins. All rights reserved. MIT license.
+import { Client, KlasaClientOptions, Schema, Settings, util } from 'klasa';
 import { join } from 'path';
+import { GuildChannelGateway } from './settings/gateways/GuildChannelGateway';
+import { OPTIONS } from './util/CONSTANTS';
 
-import { CategoryChannelGateway } from './settings/CategoryChannelGateway';
-import { TextChannelGateway } from './settings/TextChannelGateway';
-import { VoiceChannelGateway } from './settings/VoiceChannelGateway';
+Client.defaultTextChannelSchema = new Schema();
+Client.defaultVoiceChannelSchema = new Schema();
+Client.defaultCategoryChannelSchema = new Schema();
 
-import { CLIENT } from './util/contants';
+/**
+ * The client for handling everything. See {@tutorial GettingStarted} for more information how to get started using this class.
+ * @extends external:KlasaClient
+ * @tutorial GettingStarted
+ */
+export class ChannelGatewaysClient extends Client {
+	/**
+	 * @typedef {external:KlasaClientOptions} ChannelGatewaysClientOptions
+	 * @property {GatewayOptions} [channelGateways={}]
+	 */
 
-KlasaClient.defaultCategoryChannelSchema = new Schema();
-KlasaClient.defaultTextChannelSchema = new Schema();
-KlasaClient.defaultVoiceChannelSchema = new Schema();
+	/**
+	 * Which gateway to enable for the channel type. They can be enabled and disabled at any point in time
+	 * @typedef {GatewayOptions}
+	 * @property {boolean} [text=true]
+	 * @property {boolean} [voice=true]
+	 * @property {boolean} [category=true]
+	 */
 
-export class ChannelsGatewayClient extends KlasaClient {
+	/**
+	 * Constructs the gateways client.
+	 * @since 1.0.0
+	 * @param {ChannelGatewaysClientOptions} [options] The options to pass to the new client
+	 */
+	constructor(options?: KlasaClientOptions) {
+		super(options);
+		// @ts-ignore
+		this.constructor[Client.plugin].call(this);
+	}
 
-  constructor(opt: KlasaClientOptions) {
-    super(opt);
-    // @ts-ignore
-    this.constructor[KlasaClient.plugin].call(this);
-  }
+	static [Client.plugin]() {
+		const typedThis = this as unknown as ChannelGatewaysClient;
+		util.mergeDefault(OPTIONS, typedThis.options);
 
-  static [KlasaClient.plugin]() {
-    const self = this as unknown as ChannelsGatewayClient;
-    util.mergeDefault(CLIENT, self.options);
+		const coreDirectory = join(__dirname, '..', '/');
 
-    // Text Channels
-    const textChannels = self.options.gateways.textchannels as GatewayDriverRegisterOptions;
-    const textChannelSchema = ChannelsGatewayClient.defaultTextChannelSchema;
-    const textChannelProvider = (textChannels.provider || self.options.providers.default) as string;
+		// @ts-ignore
+		typedThis.commands.registerCoreDirectory(coreDirectory);
 
-    self.gateways.textchannels = new TextChannelGateway(self.gateways, 'textchannels', textChannelSchema, textChannelProvider);
-    self.gateways.keys.add('textchannels');
-    // @ts-ignore
-    self.gateways._queue.push(self.gateways.textchannels.init.bind(self.gateways.textchannels));
+		const { channelGateways, gateways } = typedThis.options;
+		const { categoryChannel, textChannel, voiceChannel } = gateways;
 
-    // Voice Channels
-    const voiceChannels = self.options.gateways.voicechannels as GatewayDriverRegisterOptions;
-    const voiceChannelSchema = KlasaClient.defaultVoiceChannelSchema;
-    const voiceChannelProvider = (voiceChannels.provider || self.options.providers.default) as string;
+		categoryChannel!.schema = 'schema' in categoryChannel! ? categoryChannel!.schema : Client.defaultCategoryChannelSchema;
+		textChannel!.schema = 'schema' in textChannel! ? textChannel!.schema : Client.defaultTextChannelSchema;
+		voiceChannel!.schema = 'schema' in voiceChannel! ? voiceChannel!.schema : Client.defaultVoiceChannelSchema;
 
-    self.gateways.voicechannels = new VoiceChannelGateway(self.gateways, 'voicechannels', voiceChannelSchema, voiceChannelProvider);
-    self.gateways.keys.add('voicechannels');
-    // @ts-ignore
-    self.gateways._queue.push(self.gateways.voicechannels.init.bind(self.gateways.voicechannels));
+		categoryChannel!.provider = 'provider' in categoryChannel! ? categoryChannel!.provider : typedThis.options.providers.default;
+		textChannel!.provider = 'provider' in textChannel! ? textChannel!.provider : typedThis.options.providers.default;
+		voiceChannel!.provider = 'provider' in voiceChannel! ? voiceChannel!.provider : typedThis.options.providers.default;
 
-    // Category Channels
-    const categoryChannels = self.options.gateways.categorychannels as GatewayDriverRegisterOptions;
-    const categoryChannelSchema = KlasaClient.defaultCategoryChannelSchema;
-    const categoryChannelProvider = (categoryChannels.provider || self.options.providers.default) as string;
+		// Settings branch code
+		/*
+		if (channelGateways.category) typedThis.gateways.register(new GuildChannelGateway(typedThis, 'categoryChannel', categoryChannel));
+		if (channelGateways.text) typedThis.gateways.register(new GuildChannelGateway(typedThis, 'textChannel', textChannel));
+		if (channelGateways.voice) typedThis.gateways.register(new GuildChannelGateway(typedThis, 'voiceChannel', voiceChannel));
+		*/
 
-    self.gateways.categorychannels = new CategoryChannelGateway(self.gateways, 'categorychannels', categoryChannelSchema, categoryChannelProvider);
-    self.gateways.keys.add('categorychannels');
-    // @ts-ignore
-    self.gateways._queue.push(self.gateways.categorychannels.init.bind(self.gateways.categorychannels));
+		if (channelGateways.category) {
+			typedThis.gateways.categoryChannel = new GuildChannelGateway(typedThis.gateways, 'categoryChannel', categoryChannel!.schema!, categoryChannel!.provider!);
+			typedThis.gateways.keys.add('categoryChannel');
+			// @ts-ignore
+			typedThis.gateways._queue.push(typedThis.gateways.categoryChannel.init.bind(typedThis.gateways.categoryChannel));
+		}
 
-    // @ts-ignore
-    self.commands.registerCoreDirectory(join(__dirname, '../'));
-  }
+		if (channelGateways.text) {
+			typedThis.gateways.textChannel = new GuildChannelGateway(typedThis.gateways, 'textChannel', textChannel!.schema!, textChannel!.provider!);
+			typedThis.gateways.keys.add('textChannel');
+			// @ts-ignore
+			typedThis.gateways._queue.push(typedThis.gateways.textChannel.init.bind(typedThis.gateways.textChannel));
+		}
+
+		if (channelGateways.voice) {
+			typedThis.gateways.voiceChannel = new GuildChannelGateway(typedThis.gateways, 'voiceChannel', voiceChannel!.schema!, voiceChannel!.provider!);
+			typedThis.gateways.keys.add('voiceChannel');
+			// @ts-ignore
+			typedThis.gateways._queue.push(typedThis.gateways.voiceChannel.init.bind(typedThis.gateways.voiceChannel));
+		}
+	}
 }
 
 declare module 'klasa' {
+	namespace Client {
+		export let defaultTextChannelSchema: Schema;
+		export let defaultVoiceChannelSchema: Schema;
+		export let defaultCategoryChannelSchema: Schema;
+	}
 
-  interface GatewayDriver {
-    categorychannels: CategoryChannelGateway;
-    textchannels: TextChannelGateway;
-    voicechannels: VoiceChannelGateway;
-  }
+	// TODO(Vlad): Remove this once settings branch is merged
+	interface GatewayDriver {
+		categoryChannel?: GuildChannelGateway;
+		textChannel?: GuildChannelGateway;
+		voiceChannel?: GuildChannelGateway;
+	}
 
-  namespace KlasaClient {
-    export let defaultCategoryChannelSchema: Schema;
-    export let defaultTextChannelSchema: Schema;
-    export let defaultVoiceChannelSchema: Schema;
-  }
+	interface KlasaClientOptions {
+		channelGateways?: {
+			text?: boolean;
+			voice?: boolean;
+			category?: boolean;
+		};
+	}
+
+	interface GatewaysOptions {
+		categoryChannel?: GatewayDriverRegisterOptions;
+		textChannel?: GatewayDriverRegisterOptions;
+		voiceChannel?: GatewayDriverRegisterOptions;
+	}
 }
 
 declare module 'discord.js' {
-  interface Client {
-    defaultTextChannelSchema: Schema;
-  }
-  interface Channel {
-    settings: Settings;
-  }
+	interface GuildChannel {
+		settings: Settings | null;
+	}
 }

@@ -2,35 +2,49 @@
   "name": "@kcp/channels-gateway",
   "version": "1.0.0",
   "description": "Klasa Channels Gateway: a plugin to add per-channel settings gateway",
-  "main": "dist/index",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "homepage": "https://github.com/KlasaCommunityPlugins/channels-gateway#readme",
+  "bugs": {
+    "url": "https://github.com/KlasaCommunityPlugins/channels-gateway/issues"
   },
+  "license": "MIT",
+  "author": "KlasaCommunityPlugins",
+  "contributors": [
+    "1ConaN"
+  ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/KlasaCommunityPlugins/channels-gateway.git"
   },
-  "keywords": [
-    "klasa"
-  ],
-  "author": "1Conan",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/KlasaCommunityPlugins/channels-gateway/issues"
+  "scripts": {
+    "test:lint": "yarn tslint 'src/*.ts' && yarn eslint --config .eslintrcmd.json --ext md guides && yarn markdownlint guides README.md",
+    "build": "yarn tsc",
+    "docs": "yarn build && yarn dg --source dist --custom guides/.docconfig.json --output dist/docs.json --logging"
   },
-  "homepage": "https://github.com/KlasaCommunityPlugins/channels-gateway#readme",
   "peerDependencies": {
     "discord.js": "github:discordjs/discord.js",
     "klasa": "github:dirigeants/klasa"
   },
   "devDependencies": {
     "@kcp/lint": "github:KlasaCommunityPlugins/lint-files",
-    "@types/node": "^11.11.4",
-    "tslint": "^5.14.0",
-    "typescript": "^3.3.4000"
-  },
-  "dependencies": {
+    "@types/node": "^11.12.2",
     "discord.js": "github:discordjs/discord.js",
-    "klasa": "github:dirigeants/klasa"
-  }
+    "docgen": "github:dirigeants/docsgen",
+    "eslint": "^5.16.0",
+    "eslint-config-klasa": "github:dirigeants/klasa-lint",
+    "eslint-plugin-markdown": "^1.0.0-beta.6",
+    "klasa": "github:dirigeants/klasa",
+    "markdownlint-cli": "^0.14.1",
+    "tslint": "^5.14.0",
+    "typescript": "^3.4.1"
+  },
+  "engines": {
+    "node": ">= 10.1.0"
+  },
+  "files": [
+    "dist/",
+    "README.md",
+    "LICENSE"
+  ]
 }
