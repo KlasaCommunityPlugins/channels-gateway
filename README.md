@@ -1,4 +1,17 @@
-# Channel Gateways [![Build Status](https://dev.azure.com/klasacommunityplugins/Plugins/_apis/build/status/Channel%20Gateways?branchName=master)](https://dev.azure.com/klasacommunityplugins/Plugins/_build/latest?definitionId=8&branchName=master)
+<div>
+	<br/>
+	<p>
+	  <a href="https://www.npmjs.com/package/@kcp/channels-gateway"><img src="https://img.shields.io/npm/v/@kcp/channels-gateway.svg?maxAge=3600" alt="NPM version" /></a>
+		<a href="https://www.npmjs.com/package/@kcp/channels-gateway"><img src="https://img.shields.io/npm/dt/@kcp/channels-gateway.svg?maxAge=3600" alt="NPM downloads" /></a>
+		<a href="https://packagephobia.now.sh/result?p=@kcp/channels-gateway"><img src="https://packagephobia.now.sh/badge?p=@kcp/channels-gateway" alt="Install Size"></a>
+    <a href="https://dev.azure.com/klasacommunityplugins/Plugins/_build/latest?definitionId=8&branchName=master"><img src="https://dev.azure.com/klasacommunityplugins/Plugins/_apis/build/status/Channel%20Gateways?branchName=master" alt="Build Status"></a>
+	</p>
+	<p>
+    <a href="https://nodei.co/npm/@kcp/channels-gateway"><img src="https://nodei.co/npm/@kcp/channels-gateway.png?downloads=true&stars=true" alt="NPM info"></a>
+  </p>
+</div>
+
+# Channel Gateways
 
 A simple Klasa plugin which adds settings to all your channels
 

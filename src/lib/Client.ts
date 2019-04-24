@@ -38,52 +38,51 @@ export class ChannelGatewaysClient extends Client {
 		this.constructor[Client.plugin].call(this);
 	}
 
-	static [Client.plugin]() {
-		const typedThis = this as unknown as ChannelGatewaysClient;
-		util.mergeDefault(OPTIONS, typedThis.options);
+	static [Client.plugin](this: ChannelGatewaysClient) {
+		util.mergeDefault(OPTIONS, this.options);
 
 		const coreDirectory = join(__dirname, '..', '/');
 
 		// @ts-ignore
-		typedThis.commands.registerCoreDirectory(coreDirectory);
+		this.commands.registerCoreDirectory(coreDirectory);
 
-		const { channelGateways, gateways } = typedThis.options;
+		const { channelGateways, gateways } = this.options;
 		const { categoryChannel, textChannel, voiceChannel } = gateways;
 
 		categoryChannel!.schema = 'schema' in categoryChannel! ? categoryChannel!.schema : Client.defaultCategoryChannelSchema;
 		textChannel!.schema = 'schema' in textChannel! ? textChannel!.schema : Client.defaultTextChannelSchema;
 		voiceChannel!.schema = 'schema' in voiceChannel! ? voiceChannel!.schema : Client.defaultVoiceChannelSchema;
 
-		categoryChannel!.provider = 'provider' in categoryChannel! ? categoryChannel!.provider : typedThis.options.providers.default;
-		textChannel!.provider = 'provider' in textChannel! ? textChannel!.provider : typedThis.options.providers.default;
-		voiceChannel!.provider = 'provider' in voiceChannel! ? voiceChannel!.provider : typedThis.options.providers.default;
+		categoryChannel!.provider = 'provider' in categoryChannel! ? categoryChannel!.provider : this.options.providers.default;
+		textChannel!.provider = 'provider' in textChannel! ? textChannel!.provider : this.options.providers.default;
+		voiceChannel!.provider = 'provider' in voiceChannel! ? voiceChannel!.provider : this.options.providers.default;
 
 		// Settings branch code
 		/*
-		if (channelGateways.category) typedThis.gateways.register(new GuildChannelGateway(typedThis, 'categoryChannel', categoryChannel));
-		if (channelGateways.text) typedThis.gateways.register(new GuildChannelGateway(typedThis, 'textChannel', textChannel));
-		if (channelGateways.voice) typedThis.gateways.register(new GuildChannelGateway(typedThis, 'voiceChannel', voiceChannel));
+		if (channelGateways.category) this.gateways.register(new GuildChannelGateway(this, 'categoryChannel', categoryChannel));
+		if (channelGateways.text) this.gateways.register(new GuildChannelGateway(this, 'textChannel', textChannel));
+		if (channelGateways.voice) this.gateways.register(new GuildChannelGateway(this, 'voiceChannel', voiceChannel));
 		*/
 
 		if (channelGateways.category) {
-			typedThis.gateways.categoryChannel = new GuildChannelGateway(typedThis.gateways, 'categoryChannel', categoryChannel!.schema!, categoryChannel!.provider!);
-			typedThis.gateways.keys.add('categoryChannel');
+			this.gateways.categoryChannel = new GuildChannelGateway(this.gateways, 'categoryChannel', categoryChannel!.schema!, categoryChannel!.provider!);
+			this.gateways.keys.add('categoryChannel');
 			// @ts-ignore
-			typedThis.gateways._queue.push(typedThis.gateways.categoryChannel.init.bind(typedThis.gateways.categoryChannel));
+			this.gateways._queue.push(this.gateways.categoryChannel.init.bind(this.gateways.categoryChannel));
 		}
 
 		if (channelGateways.text) {
-			typedThis.gateways.textChannel = new GuildChannelGateway(typedThis.gateways, 'textChannel', textChannel!.schema!, textChannel!.provider!);
-			typedThis.gateways.keys.add('textChannel');
+			this.gateways.textChannel = new GuildChannelGateway(this.gateways, 'textChannel', textChannel!.schema!, textChannel!.provider!);
+			this.gateways.keys.add('textChannel');
 			// @ts-ignore
-			typedThis.gateways._queue.push(typedThis.gateways.textChannel.init.bind(typedThis.gateways.textChannel));
+			this.gateways._queue.push(this.gateways.textChannel.init.bind(this.gateways.textChannel));
 		}
 
 		if (channelGateways.voice) {
-			typedThis.gateways.voiceChannel = new GuildChannelGateway(typedThis.gateways, 'voiceChannel', voiceChannel!.schema!, voiceChannel!.provider!);
-			typedThis.gateways.keys.add('voiceChannel');
+			this.gateways.voiceChannel = new GuildChannelGateway(this.gateways, 'voiceChannel', voiceChannel!.schema!, voiceChannel!.provider!);
+			this.gateways.keys.add('voiceChannel');
 			// @ts-ignore
-			typedThis.gateways._queue.push(typedThis.gateways.voiceChannel.init.bind(typedThis.gateways.voiceChannel));
+			this.gateways._queue.push(this.gateways.voiceChannel.init.bind(this.gateways.voiceChannel));
 		}
 	}
 }
