@@ -1,6 +1,6 @@
 {
   "name": "@kcp/channels-gateway",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Klasa Channels Gateway: a plugin to add per-channel settings gateway",
   "homepage": "https://github.com/KlasaCommunityPlugins/channels-gateway",
   "bugs": {
