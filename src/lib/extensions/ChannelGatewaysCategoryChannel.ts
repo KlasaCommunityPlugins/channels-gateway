@@ -1,8 +1,8 @@
 // Copyright (c) 2018-2019 KlasaCommunityPlugins. All rights reserved. MIT license.
-import { CategoryChannel, Structures } from 'discord.js';
+import { Structures } from 'discord.js';
 import { Settings } from 'klasa';
 
-class ChannelGatewaysCategoryChannel extends CategoryChannel {
+class ChannelGatewaysCategoryChannel extends Structures.get('CategoryChannel') {
 	/**
 	 * @typedef {external:CategoryChannelJSON} CategoryChannelJSON
 	 * @property {external:SettingsJSON} settings The per category channel settings

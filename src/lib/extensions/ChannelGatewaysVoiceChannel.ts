@@ -1,8 +1,8 @@
 // Copyright (c) 2018-2019 KlasaCommunityPlugins. All rights reserved. MIT license.
-import { Structures, VoiceChannel } from 'discord.js';
+import { Structures } from 'discord.js';
 import { Settings } from 'klasa';
 
-class ChannelGatewaysVoiceChannel extends VoiceChannel {
+class ChannelGatewaysVoiceChannel extends Structures.get('VoiceChannel') {
 	/**
 	 * @typedef {external:VoiceChannelJSON} VoiceChannelJSON
 	 * @property {external:SettingsJSON} settings The per voice channel settings

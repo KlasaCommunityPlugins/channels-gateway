@@ -1,8 +1,8 @@
 // Copyright (c) 2018-2019 KlasaCommunityPlugins. All rights reserved. MIT license.
-import { Structures, TextChannel } from 'discord.js';
+import { Structures } from 'discord.js';
 import { Settings } from 'klasa';
 
-class ChannelGatewaysTextChannel extends TextChannel {
+class ChannelGatewaysTextChannel extends Structures.get('TextChannel') {
 	/**
 	 * @typedef {external:TextChannelJSON} TextChannelJSON
 	 * @property {external:SettingsJSON} settings The per text channel settings
