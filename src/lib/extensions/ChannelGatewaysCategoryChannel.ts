@@ -14,7 +14,7 @@ class ChannelGatewaysCategoryChannel extends Structures.get('CategoryChannel') {
 	 * @type {Settings|null}
 	 */
 	// @ts-ignore
-	settings: Settings | null = this.client.options.channelGateways[this.type] ? this.client.gateways.get(`${this.type}Channel`).get(this.id, true) : null;
+	settings: Settings | null = this.client.options.channelGateways[this.type] ? this.client.gateways.get(`${this.type}Channel`).acquire(this) : null;
 
 	/**
 	 * Returns the JSON-compatible object of this instance.
