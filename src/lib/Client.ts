@@ -57,33 +57,9 @@ export class ChannelGatewaysClient extends Client {
 		textChannel!.provider = 'provider' in textChannel! ? textChannel!.provider : this.options.providers.default;
 		voiceChannel!.provider = 'provider' in voiceChannel! ? voiceChannel!.provider : this.options.providers.default;
 
-		// Settings branch code
-		/*
 		if (channelGateways.category) this.gateways.register(new GuildChannelGateway(this, 'categoryChannel', categoryChannel));
 		if (channelGateways.text) this.gateways.register(new GuildChannelGateway(this, 'textChannel', textChannel));
 		if (channelGateways.voice) this.gateways.register(new GuildChannelGateway(this, 'voiceChannel', voiceChannel));
-		*/
-
-		if (channelGateways.category) {
-			this.gateways.categoryChannel = new GuildChannelGateway(this.gateways, 'categoryChannel', categoryChannel!.schema!, categoryChannel!.provider!);
-			this.gateways.keys.add('categoryChannel');
-			// @ts-ignore
-			this.gateways._queue.push(this.gateways.categoryChannel.init.bind(this.gateways.categoryChannel));
-		}
-
-		if (channelGateways.text) {
-			this.gateways.textChannel = new GuildChannelGateway(this.gateways, 'textChannel', textChannel!.schema!, textChannel!.provider!);
-			this.gateways.keys.add('textChannel');
-			// @ts-ignore
-			this.gateways._queue.push(this.gateways.textChannel.init.bind(this.gateways.textChannel));
-		}
-
-		if (channelGateways.voice) {
-			this.gateways.voiceChannel = new GuildChannelGateway(this.gateways, 'voiceChannel', voiceChannel!.schema!, voiceChannel!.provider!);
-			this.gateways.keys.add('voiceChannel');
-			// @ts-ignore
-			this.gateways._queue.push(this.gateways.voiceChannel.init.bind(this.gateways.voiceChannel));
-		}
 	}
 }
 
@@ -92,13 +68,6 @@ declare module 'klasa' {
 		export let defaultTextChannelSchema: Schema;
 		export let defaultVoiceChannelSchema: Schema;
 		export let defaultCategoryChannelSchema: Schema;
-	}
-
-	// TODO(Vlad): Remove this once settings branch is merged
-	interface GatewayDriver {
-		categoryChannel?: GuildChannelGateway;
-		textChannel?: GuildChannelGateway;
-		voiceChannel?: GuildChannelGateway;
 	}
 
 	interface KlasaClientOptions {
