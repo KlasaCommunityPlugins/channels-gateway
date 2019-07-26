@@ -77,12 +77,6 @@ declare module 'klasa' {
 			category?: boolean;
 		};
 	}
-
-	interface GatewaysOptions {
-		categoryChannel?: GatewayDriverRegisterOptions;
-		textChannel?: GatewayDriverRegisterOptions;
-		voiceChannel?: GatewayDriverRegisterOptions;
-	}
 }
 
 declare module 'discord.js' {
